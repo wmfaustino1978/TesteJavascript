@@ -12,8 +12,8 @@ class Login{
     static config={
         cor:"048",
         img:"c1.png"
+        endpoint:null, //https://login.wmfaustino.repl.co"
     };
-    static endpoint="https://login.wmfaustino.repl.co";
 
     static login=(callback_ok, callback_naook, config=null)=>{
         if(config !=null){
@@ -124,25 +124,24 @@ class Login{
         const mat=document.querySelector("#f_username").value;
         const pass=document.querySelector("#f_senha").value;
 
-        const endpoint=`https://login.wmfaustino.repl.co/?matricula=${mat}&senha=${pass}`;
+        const endpoint=`${this.config.endpoint}/?matricula=${mat}&senha=${pass}`;
 
         fetch(endpoint)
         .then(res=>res.json())
         .then(res=>{
             if(res){
-               this.logado=true;
-               this.matlogado=mat;
-               this.nomelogado=res.nome;
-               this.acessologado=res.acesso;
+               sessionStorage.setItem("logado","true");
+               sessionStorage.setItem("matlogado",mat);
+               sessionStorage.setItem("nomelogado",res.nome);
+               sessionStorage.setItem("acessologado",res.acesso);
                this.callback_ok();
-               console.log(res);
                this.fechar();
                
             }else{
-                this.logado=false;
-                this.matlogado=null;
-                this.nomelogado=null;
-                this.acessologado=null;
+                sessionStorage.setItem("logado","false");
+                sessionStorage.setItem("matlogado","");
+                sessionStorage.setItem("nomelogado","");
+                sessionStorage.setItem("acessologado","");
                 this.callback_naook();
             }
         })
